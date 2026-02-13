@@ -28,7 +28,7 @@ class UserController extends Controller
         return $this->handleException(function () use ($request) {
 
             $users = $this->service->list($request->all());
-        
+            
             return $this->success_list( 
                 UserResource::collection($users['data']),
                 $users['totalCount'],
@@ -47,9 +47,10 @@ class UserController extends Controller
         Gate::authorize('create', $this->model);
 
         return $this->handleException(function () use ($request) {
-            $user = $this->service->create(
-                UserDTO::fromArray($request->validated())
-            );
+            $dto = UserDTO::fromArray($request->validated());
+			$dto->owner = 0;
+            $dto->owner_id = $this->ownerid($request);
+			$user = $this->service->create($dto);
 
             return $this->success(
                 new UserResource($user),

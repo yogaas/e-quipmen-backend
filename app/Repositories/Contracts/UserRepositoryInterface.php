@@ -7,5 +7,5 @@ use App\Models\User;
 
 interface UserRepositoryInterface extends BaseRepositoryInterface
 {
-    
+    public function paginateUser(array $params);
 }
