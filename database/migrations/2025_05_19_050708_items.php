@@ -15,6 +15,7 @@ return new class extends Migration
             $table->id(); // primary key integer auto-increment 'id'
             $table->unsignedBigInteger('owner_id');
             $table->unsignedBigInteger('section_id');
+            $table->unsignedBigInteger('category_id');
             $table->string('name');
             $table->string('unit_purchase');
             $table->string('unit_sale');

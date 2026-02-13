@@ -4,6 +4,7 @@ use App\Http\Controllers\Api\AuthController;
 
 use App\Http\Controllers\Api\UserController;
 use App\Http\Controllers\Api\CustomerController;
+use App\Http\Controllers\Api\ItemCategoryController;
 use App\Http\Controllers\Api\ItemsController;
 use App\Http\Controllers\Api\SupplierController;
 use App\Http\Controllers\Api\AccountController;
@@ -24,6 +25,7 @@ Route::prefix('api/v1')->group(function () {
     
         Route::apiResource('users', UserController::class);
         Route::apiResource('customers', CustomerController::class);
+        Route::apiResource('categories', ItemCategoryController::class);
         Route::apiResource('items', ItemsController::class);
         Route::apiResource('suppliers', SupplierController::class);
         Route::apiResource('accounts', AccountController::class);

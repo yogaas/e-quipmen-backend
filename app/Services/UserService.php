@@ -15,7 +15,7 @@ class UserService
 
     public function list(array $params) : array
     {
-        return $this->repo->paginateUser($params);
+        return $this->repo->paginate($params);
     }
 
     public function create(UserDTO $dto)

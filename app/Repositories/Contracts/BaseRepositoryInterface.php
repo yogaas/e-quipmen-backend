@@ -18,4 +18,6 @@ interface BaseRepositoryInterface
     public function delete(int|string $id): void;
 
     public function paginate(array $params);
+
+    public function paginateWhere(array $params, array $where = null);
 }

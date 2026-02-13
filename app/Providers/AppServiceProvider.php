@@ -12,6 +12,9 @@ use App\Repositories\Eloquent\UserRepository;
 use App\Repositories\Contracts\CustomerRepositoryInterface;
 use App\Repositories\Eloquent\CustomerRepository;
 
+use App\Repositories\Contracts\ItemCategoryRepositoryInterface;
+use App\Repositories\Eloquent\ItemCategoryRepository;
+
 use App\Repositories\Contracts\ItemsRepositoryInterface;
 use App\Repositories\Eloquent\ItemsRepository;
 
@@ -49,6 +52,11 @@ class AppServiceProvider extends ServiceProvider
         $this->app->bind(
             CustomerRepositoryInterface::class,
             CustomerRepository::class
+        );
+
+        $this->app->bind(
+            ItemCategoryRepositoryInterface::class,
+            ItemCategoryRepository::class
         );
 
         $this->app->bind(

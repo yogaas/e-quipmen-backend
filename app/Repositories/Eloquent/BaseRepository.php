@@ -52,12 +52,12 @@ abstract class BaseRepository
 
     public function paginate(array $params) : array
     {
-        //dd($params);
         $search  = $params['search'] ?? null;
         $orderByFieldName  = $params['orderByFieldName'] ?? '';
         $sortOrder = $params['sortOrder'] ?? 'asc';
         $pageSize = $params['pageSize'] ?? 10;
         $pageIndex = $params['pageIndex'] ?? 0;
+
         $skipRecord =  $pageSize*$pageIndex;
 
         $query = $this->model::query();
@@ -75,6 +75,63 @@ abstract class BaseRepository
         }
 
         $total = $query->count();
+        $data = $query
+        ->orderBy($orderByFieldName, $sortOrder)
+        ->take($pageSize)
+        ->skip($skipRecord)
+        ->get();
+        $array_list = [
+            'data'                  => $data,
+            'totalCount'            => $total,
+            'pageSize'              => $pageSize,
+            'pageIndex'             => $pageIndex,
+            'sortOrder'             => $sortOrder,
+            'orderByFieldName'      => $orderByFieldName,
+        ];
+        return ($array_list);
+    }
+
+    public function paginateWhere(array $params, array $where = null) : array
+    {
+        $search  = $params['search'] ?? null;
+        $orderByFieldName  = $params['orderByFieldName'] ?? '';
+        $sortOrder = $params['sortOrder'] ?? 'asc';
+        $pageSize = $params['pageSize'] ?? 10;
+        $pageIndex = $params['pageIndex'] ?? 0;
+
+        $skipRecord =  $pageSize*$pageIndex;
+
+        $query = $this->model::query();
+        
+        $i = 0;
+        if($where){
+            $no = 1;
+            foreach ($where as $key => $value) {
+                if($no == 1){
+                    $query->where($key, $value);
+                }else{
+                    $query->Where($key, $value);
+                }
+                $no++;
+                $i++;
+            }
+        }
+
+        $total = $query->count();
+
+        if ($search) {
+            $no = 1;
+            foreach ($this->model->getFillable() as $key => $value) {
+                if($no == 1 && $i == 0){
+                    $query->where($value, 'like', "%{$search}%");
+                }else{
+                    $query->orWhere($value, 'like', "%{$search}%");
+                }
+                $no++;
+            }
+            
+        }
+
         $data = $query
         ->orderBy($orderByFieldName, $sortOrder)
         ->take($pageSize)
