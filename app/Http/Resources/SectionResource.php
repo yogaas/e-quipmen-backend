@@ -11,12 +11,10 @@ class SectionResource extends JsonResource
     {
         return [
             'id'                => $this->id, 
-            'owner_id'                => $this->owner_id, 
             'account_id'                => $this->account_id, 
             'name'                => $this->name, 
             'tag'                => $this->tag, 
             'active'                => $this->active, 
-            
         ];
     }
 }

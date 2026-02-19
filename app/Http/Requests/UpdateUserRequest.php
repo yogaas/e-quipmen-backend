@@ -4,13 +4,13 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class UserRequest extends FormRequest
+class UpdateUserRequest extends FormRequest
 {
     public function rules(): array
     {
         return [
             'name'     => 'required|string|max:255',
-            'email'    => 'required|email|unique:users,email',
+            'email'    => 'required|email',
             'password' => 'nullable|string|min:8',
             'role'     => 'required|string',
             'active'   => 'required|integer|min:1',

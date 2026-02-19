@@ -13,9 +13,9 @@ class SupplierService
         protected SupplierRepositoryInterface $repo
     ) {}
 
-    public function list(array $params) : array
+    public function list(array $params, array $where) : array
     {
-        return $this->repo->paginate($params);
+        return $this->repo->paginateWhere($params, $where);
     }
 
     public function create(SupplierDTO $dto)

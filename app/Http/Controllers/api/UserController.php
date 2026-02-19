@@ -9,6 +9,7 @@ use App\Services\UserService;
 use App\Traits\ApiResponse;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\UserRequest;
+use App\Http\Requests\UpdateUserRequest;
 use App\Http\Resources\UserResource;
 use Illuminate\Support\Facades\Gate;
 
@@ -50,7 +51,10 @@ class UserController extends Controller
             $dto = UserDTO::fromArray($request->validated());
 			$dto->owner = 0;
             $dto->owner_id = $this->ownerid($request);
-			$user = $this->service->create($dto);
+			$user = $this->service->create($dto, [
+                'role' => $request->role,
+                'active' => $request->active,
+            ]);
 
             return $this->success(
                 new UserResource($user),
@@ -67,7 +71,7 @@ class UserController extends Controller
         return $this->handleException(function () use ($id) {
 
             $user = $this->service->find($id);
-
+            
             return $this->success(
                 new UserResource($user),
                 'User detail retrieved'
@@ -75,15 +79,19 @@ class UserController extends Controller
         });
     }
 
-    public function update(UserRequest $request, int $id)
+    public function update(UpdateUserRequest $request, int $id)
     {
         Gate::authorize('update', $this->model);
 
-        return $this->handleException(function () use ($id) {
+        return $this->handleException(function () use ($id, $request) {
 
             $user = $this->service->update(
                 $id,
-                UserDTO::fromArray($request->validated())
+                UserDTO::fromArray($request->validated()),
+                [
+                    'role' => $request->role,
+                    'active' => $request->active,
+                ]
             );
 
             return $this->success(

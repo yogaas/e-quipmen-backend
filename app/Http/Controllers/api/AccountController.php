@@ -40,12 +40,13 @@ class AccountController extends Controller
     public function store(AccountRequest $request)
     {
         return $this->handleException(function () use ($request) {
-            $data = $this->service->create(
-                UserDTO::fromArray($request->validated())
-            );
 
+            $dto = AccountDTO::fromArray($request->validated());
+            $dto->owner_id = $this->ownerid($request);
+            $data = $this->service->create($dto);
+            
             return $this->success(
-                new UserResource($data),
+                new AccountResource($data),
                 'Account created',
                 201
             );
@@ -59,7 +60,7 @@ class AccountController extends Controller
             $data = $this->service->find($id);
 
             return $this->success(
-                new UserResource($data),
+                new AccountResource($data),
                 'Account detail retrieved'
             );
         });
@@ -67,11 +68,12 @@ class AccountController extends Controller
 
     public function update(AccountRequest $request, int $id)
     {
-        return $this->handleException(function () use ($id) {
-
+        return $this->handleException(function () use ($id,  $request) {
+            $dto = AccountDTO::fromArray($request->validated());
+            $dto->owner_id = $this->ownerid($request);
             $data = $this->service->update(
                 $id,
-                AccountDTO::fromArray($request->validated())
+                $dto
             );
 
             return $this->success(

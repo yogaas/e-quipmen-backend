@@ -2,14 +2,13 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Section extends Model
+class Menus extends Model
 {
-    use HasFactory;
-    protected $table = 'sections';
-    protected $primaryKey = 'id';
+    protected $table = 'menus';
+    protected $primaryKey = 'menus';
+    protected $keyType = 'string';
     protected $guarded = [];
     public $timestamps = false;
 

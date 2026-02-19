@@ -3,6 +3,8 @@
 namespace App\Services;
 
 use App\Models\User;
+use App\Models\Menus;
+use App\Models\UserRole;
 use App\DTOs\UserDTO;
 use Illuminate\Support\Facades\Hash;
 use App\Repositories\Contracts\UserRepositoryInterface;
@@ -18,9 +20,17 @@ class UserService
         return $this->repo->paginate($params);
     }
 
-    public function create(UserDTO $dto)
+    public function create(UserDTO $dto, array $roleData)
     {
-        return $this->repo->create($dto->toArray());
+        $user = $this->repo->create($dto->toArray());
+
+        UserRole::create([
+            'owner_id' => $user->owner_id,
+            'user_id' => $user->id,
+            'role' => $roleData['role'],
+            'active' => $roleData['active']
+        ]);
+        return $user;
     }
 
     public function find(int $id)
@@ -29,20 +39,35 @@ class UserService
         if (!$user) {
             throw new \RuntimeException('User not found');
         }
+       
         return $user;
     }
 
-    public function update(int $id, UserDTO $dto)
+    public function update(int $id, UserDTO $dto, array $roleData)
     {
         $user = $this->repo->findById($id);
         if (!$user) {
             throw new \RuntimeException('User not found');
         }
 
-        $user = new UIser($dto);
-        //$user->password = Hash::make($user->password);
+        $return = $this->repo->update($id, $dto->toArray());
+
+        $role = UserRole::where(['user_id' => $id, 'owner_id' => $user->owner_id])->first();
+        if ($role) {
+            $role->update([
+            'role' => $roleData['role'],
+            'active' => $roleData['active']
+            ]);
+        }else{
+            UserRole::create([
+                'owner_id' => $user->owner_id,
+                'user_id' => $id,
+                'role' => $roleData['role'],
+                'active' => $roleData['active']
+            ]);
+        }
         
-        return $this->repo->update($id, $user->toArray());
+        return $return;
     }
 
     public function delete(int $id): void

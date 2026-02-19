@@ -9,10 +9,10 @@ class SectionRequest extends FormRequest
     public function rules(): array
     {
         return [
-                'account_id'     => 'required|string|max:255', 
+                'account_id'     => 'required|int|max:255', 
                 'name'     => 'required|string|max:255', 
                 'tag'     => 'required|string|max:255', 
-                'active'     => 'required|string|max:255', 
+                'active'     => 'required|int|max:255', 
         ];
     }
 }

@@ -12,4 +12,8 @@
         protected $primaryKey = 'id';
         protected $guarded = [];
         public $timestamps = false;
+
+        protected $hidden = [
+            'owner_id',
+        ];
     }

@@ -13,14 +13,14 @@ class CustomerService
         protected CustomerRepositoryInterface $repo
     ) {}
 
-    public function list(array $params) : array
+    public function list(array $params, array $where) : array
     {
-        return $this->repo->paginate($params);
+        return $this->repo->paginateWhere($params, $where);
     }
 
     public function create(CustomerDTO $dto)
     {
-            return $this->repo->create($dto->toArray());
+        return $this->repo->create($dto->toArray());
     }
 
     public function find(int $id)

@@ -32,6 +32,7 @@ class User extends Authenticatable
      * @var list<string>
      */
     protected $hidden = [
+        'owner_id',
         'password',
         'remember_token',
     ];
@@ -47,5 +48,10 @@ class User extends Authenticatable
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
         ];
+    }
+
+    public function role()
+    {
+         return $this->belongsTo(UserRole::class, 'id', 'user_id');
     }
 }

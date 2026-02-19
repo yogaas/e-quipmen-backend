@@ -10,8 +10,7 @@
             public function toArray(Request $request): array
             {
                 return [
-                    'id'                => $this->id, 
-					'owner_id'                => $this->owner_id, 
+					'id'                => $this->id, 
 					'id_parent'                => $this->id_parent, 
 					'code_account'                => $this->code_account, 
 					'name_account'                => $this->name_account, 
@@ -19,7 +18,6 @@
 					'header'                => $this->header, 
 					'normal_pos'                => $this->normal_pos, 
 					'grouper'                => $this->grouper, 
-					
                 ];
             }
         }

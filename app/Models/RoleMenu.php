@@ -11,6 +11,10 @@ class RoleMenu extends Model
     protected $guarded = [];
     public $timestamps = false;
 
+    protected $hidden = [
+        'owner_id',
+    ];
+
     public static function roles(User $user, $action, $menu) : bool
     {
         $return = false;

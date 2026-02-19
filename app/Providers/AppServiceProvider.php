@@ -9,6 +9,9 @@ use Illuminate\Support\ServiceProvider;
 use App\Repositories\Contracts\UserRepositoryInterface;
 use App\Repositories\Eloquent\UserRepository;
 
+use App\Repositories\Contracts\RoleRepositoryInterface;
+use App\Repositories\Eloquent\RoleRepository;
+
 use App\Repositories\Contracts\CustomerRepositoryInterface;
 use App\Repositories\Eloquent\CustomerRepository;
 
@@ -47,6 +50,11 @@ class AppServiceProvider extends ServiceProvider
         $this->app->bind(
             UserRepositoryInterface::class,
             UserRepository::class
+        );
+
+        $this->app->bind(
+            RoleRepositoryInterface::class,
+            RoleRepository::class
         );
 
         $this->app->bind(

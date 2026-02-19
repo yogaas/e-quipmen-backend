@@ -22,7 +22,8 @@ class SectionController extends Controller
     {
         return $this->handleException(function () use ($request) {
 
-            $list = $this->service->list($request->all());
+            $where = ['owner_id' => $this->ownerid($request)];
+            $list = $this->service->list($request->all(), $where);
         
             return $this->success_list(
                 SectionResource::collection($list['data']),
@@ -40,12 +41,12 @@ class SectionController extends Controller
     public function store(SectionRequest $request)
     {
         return $this->handleException(function () use ($request) {
-            $data = $this->service->create(
-                UserDTO::fromArray($request->validated())
-            );
+            $dto = SectionDTO::fromArray($request->validated());
+            $dto->owner_id = $this->ownerid($request);    
+            $data = $this->service->create($dto);
 
             return $this->success(
-                new UserResource($data),
+                new SectionResource($data),
                 'Section created',
                 201
             );
@@ -59,7 +60,7 @@ class SectionController extends Controller
             $data = $this->service->find($id);
 
             return $this->success(
-                new UserResource($data),
+                new SectionResource($data),
                 'Section detail retrieved'
             );
         });
@@ -67,11 +68,12 @@ class SectionController extends Controller
 
     public function update(SectionRequest $request, int $id)
     {
-        return $this->handleException(function () use ($id) {
-
+        return $this->handleException(function () use ($id, $request) {
+            $dto = SectionDTO::fromArray($request->validated());
+            $dto->owner_id = $this->ownerid($request);   
             $data = $this->service->update(
                 $id,
-                SectionDTO::fromArray($request->validated())
+                $dto
             );
 
             return $this->success(
